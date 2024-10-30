@@ -1,5 +1,6 @@
 package com.example.projeklabmobile
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -10,23 +11,21 @@ class MainActivity : AppCompatActivity() {
     private lateinit var listViewWishlist: ListView
     private lateinit var editTextNamaBarang: EditText
     private lateinit var editTextHargaBarang: EditText
-    private lateinit var buttonAdd: Button
-    private lateinit var textViewTotal: TextView
-    private lateinit var spinnerWaktu: Spinner
     private lateinit var editTextTarget: EditText
+    private lateinit var buttonAdd: Button
+    private lateinit var spinnerWaktu: Spinner
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        db = DatabaseHelper(this)
+        db = DatabaseHelper()
         listViewWishlist = findViewById(R.id.listViewWishlist)
         editTextNamaBarang = findViewById(R.id.editTextNamaBarang)
         editTextHargaBarang = findViewById(R.id.editTextHargaBarang)
-        buttonAdd = findViewById(R.id.buttonAdd)
-        textViewTotal = findViewById(R.id.textViewTotal)
-        spinnerWaktu = findViewById(R.id.spinnerWaktu)
         editTextTarget = findViewById(R.id.editTextTarget)
+        buttonAdd = findViewById(R.id.buttonAdd)
+        spinnerWaktu = findViewById(R.id.spinnerWaktu)
 
         wishlistAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, mutableListOf())
         listViewWishlist.adapter = wishlistAdapter
@@ -34,12 +33,29 @@ class MainActivity : AppCompatActivity() {
         buttonAdd.setOnClickListener {
             val namaBarang = editTextNamaBarang.text.toString()
             val hargaBarang = editTextHargaBarang.text.toString().toDoubleOrNull()
+            val targetWaktu = editTextTarget.text.toString().toDoubleOrNull()
 
-            if (namaBarang.isNotEmpty() && hargaBarang != null) {
-                val wishlistItem = WishlistItem(namaBarang = namaBarang, hargaBarang = hargaBarang)
-                db.addWishlistItem(wishlistItem)
-                updateWishlist()
+            if (namaBarang.isNotEmpty() && hargaBarang != null && targetWaktu != null) {
+                val wishlistItem = WishlistItem(
+                    id = db.database.reference.push().key ?: "",
+                    namaBarang = namaBarang,
+                    hargaBarang = hargaBarang,
+                    targetWaktu = targetWaktu
+                )
+                db.addWishlistItem(wishlistItem) { success ->
+                    if (success) {
+                        updateWishlist()
+                    }
+                }
             }
+        }
+
+        listViewWishlist.setOnItemClickListener { _, _, position, _ ->
+            val item = listViewWishlist.getItemAtPosition(position) as String
+            val intent = Intent(this, DetailActivity::class.java).apply {
+                putExtra("item_name", item)
+            }
+            startActivity(intent)
         }
 
         spinnerWaktu.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, arrayOf("Minggu", "Bulan"))
@@ -48,19 +64,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateWishlist() {
-        val items = db.getAllWishlistItems()
-        val names = items.map { "${it.namaBarang}: Rp${it.hargaBarang}" }
-        wishlistAdapter.clear()
-        wishlistAdapter.addAll(names)
-
-        val totalHarga = items.sumOf { it.hargaBarang }
-        val targetWaktu = editTextTarget.text.toString().toDoubleOrNull() ?: 1.0
-        val perWaktu = if (spinnerWaktu.selectedItem == "Minggu") {
-            totalHarga / (targetWaktu * 4)
-        } else {
-            totalHarga / targetWaktu
+        db.getAllWishlistItems { items ->
+            val names = items.map { "${it.namaBarang}: Rp${it.hargaBarang}" }
+            wishlistAdapter.clear()
+            wishlistAdapter.addAll(names)
         }
-
-        textViewTotal.text = "Total Tabungan: Rp${totalHarga} \nTabung per ${spinnerWaktu.selectedItem}: Rp${"%.2f".format(perWaktu)}"
     }
 }
