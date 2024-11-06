@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
                     id = db.database.reference.push().key ?: "",
                     namaBarang = namaBarang,
                     hargaBarang = hargaBarang,
-                    targetWaktu = targetWaktu
+                    targetWaktu = targetWaktu.toInt()
                 )
                 db.addWishlistItem(wishlistItem) { success ->
                     if (success) {
@@ -51,11 +51,15 @@ class MainActivity : AppCompatActivity() {
         }
 
         listViewWishlist.setOnItemClickListener { _, _, position, _ ->
-            val item = listViewWishlist.getItemAtPosition(position) as String
-            val intent = Intent(this, DetailActivity::class.java).apply {
-                putExtra("item_name", item)
+            db.getAllWishlistItems { items ->
+                val item = items[position]
+                val intent = Intent(this, DetailActivity::class.java).apply {
+                    putExtra("item_name", item.namaBarang)
+                    putExtra("item_price", item.hargaBarang)
+                    putExtra("item_target", item.targetWaktu)
+                }
+                startActivity(intent)
             }
-            startActivity(intent)
         }
 
         spinnerWaktu.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, arrayOf("Minggu", "Bulan"))
