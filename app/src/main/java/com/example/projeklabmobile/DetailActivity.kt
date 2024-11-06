@@ -1,76 +1,46 @@
 package com.example.projeklabmobile
 
 import android.os.Bundle
-import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.projeklabmobile.adapter.WeekAdapter
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 
 class DetailActivity : AppCompatActivity() {
-    private lateinit var db: FirebaseDatabase
-    private lateinit var namaBarangTextView: TextView
-    private lateinit var hargaBarangTextView: TextView
-    private lateinit var targetWaktuTextView: TextView
-    private lateinit var totalTabunganTextView: TextView
-    private lateinit var progressTextView: TextView
-    private lateinit var imageView: ImageView
+    private lateinit var textViewNamaBarang: TextView
+    private lateinit var textViewHargaBarang: TextView
+    private lateinit var textViewTargetWaktu: TextView
+    private lateinit var textViewProgress: TextView
+    private lateinit var recyclerViewWeeks: RecyclerView
+    private var targetWeeks: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
-        // Inisialisasi komponen UI
-        namaBarangTextView = findViewById(R.id.NamaBarang)
-        hargaBarangTextView = findViewById(R.id.namaBarang)
-        targetWaktuTextView = findViewById(R.id.targetWaktu)
-        totalTabunganTextView = findViewById(R.id.totalTabungan)
-        progressTextView = findViewById(R.id.Progress)
-        imageView = findViewById(R.id.imageView)
+        textViewNamaBarang = findViewById(R.id.NamaBarang)
+        textViewHargaBarang = findViewById(R.id.hargaBarang)
+        textViewTargetWaktu = findViewById(R.id.targetWaktu)
+        textViewProgress = findViewById(R.id.Progress)
+        recyclerViewWeeks = findViewById(R.id.recyclerViewWeeks)
 
-        // Inisialisasi Firebase database
-        db = FirebaseDatabase.getInstance()
+        val namaBarang = intent.getStringExtra("item_name") ?: ""
+        val hargaBarang = intent.getDoubleExtra("item_price", 0.0)
+        val targetWaktu = intent.getIntExtra("item_target", 0)
 
-        // Mendapatkan item_name dari Intent
-        val itemName = intent.getStringExtra("item_name") ?: return
+        textViewNamaBarang.text = namaBarang
+        textViewHargaBarang.text = "Harga: Rp$hargaBarang"
+        textViewTargetWaktu.text = "Target Waktu: $targetWaktu Minggu"
+        targetWeeks = targetWaktu
 
-        // Panggil fungsi untuk memuat data berdasarkan nama item
-        loadWishlistItemByName(itemName)
-    }
-
-    private fun loadWishlistItemByName(name: String) {
-        val wishlistRef = db.getReference("wishlist")
-
-        // Query untuk mendapatkan item berdasarkan nama
-        wishlistRef.orderByChild("namaBarang").equalTo(name)
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    if (snapshot.exists()) {
-                        for (itemSnapshot in snapshot.children) {
-                            val item = itemSnapshot.getValue(WishlistItem::class.java)
-                            if (item != null) {
-                                // Update komponen UI dengan data item
-                                namaBarangTextView.text = item.namaBarang
-                                hargaBarangTextView.text = "Rp${item.hargaBarang}"
-                                targetWaktuTextView.text = "${item.targetWaktu} hari"
-                                totalTabunganTextView.text = "Rp${item.totalTabungan}"
-                                progressTextView.text = "Progress: ${item.progress}%"
-
-                                // Mengatur gambar (contoh placeholder)
-                                imageView.setImageResource(R.drawable.ic_launcher_background) // Ubah sesuai drawable yang ada
-                            }
-                        }
-                    } else {
-                        Toast.makeText(this@DetailActivity, "Item tidak ditemukan", Toast.LENGTH_SHORT).show()
-                    }
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(this@DetailActivity, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
-                }
-            })
+        // Atur RecyclerView
+        recyclerViewWeeks.layoutManager = LinearLayoutManager(this)
+        val weeks = (1..targetWeeks).map { "Minggu $it" }
+        val adapter = WeekAdapter(weeks) { progress ->
+            textViewProgress.text = "Progress: $progress%"
+        }
+        recyclerViewWeeks.adapter = adapter
     }
 }
