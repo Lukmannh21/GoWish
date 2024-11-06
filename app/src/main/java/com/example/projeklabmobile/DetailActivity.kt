@@ -31,8 +31,8 @@ class DetailActivity : AppCompatActivity() {
         val targetWaktu = intent.getIntExtra("item_target", 0)
 
         textViewNamaBarang.text = namaBarang
-        textViewHargaBarang.text = "Harga: Rp$hargaBarang"
-        textViewTargetWaktu.text = "Target Waktu: $targetWaktu Minggu"
+        textViewHargaBarang.text = "Rp $hargaBarang"
+        textViewTargetWaktu.text = "$targetWaktu Minggu"
         targetWeeks = targetWaktu
 
         // Atur RecyclerView

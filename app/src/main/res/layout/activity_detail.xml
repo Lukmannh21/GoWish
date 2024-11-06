@@ -17,7 +17,7 @@
             android:layout_width="371dp"
             android:layout_height="166dp"
             android:layout_margin="10px"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="36dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.7"
             app:layout_constraintStart_toStartOf="parent"
@@ -28,64 +28,64 @@
             android:id="@+id/DetailProduk"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="100dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="16dp"
             android:text="Detail Produk"
             android:textSize="40dp"
-            app:layout_constraintStart_toStartOf="@+id/imageView"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/NamaBarang"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="100px"
+            android:layout_marginStart="4dp"
             android:padding="20px"
             android:text="Nama Barang"
-            app:layout_constraintStart_toStartOf="@+id/imageView"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+            app:layout_constraintBottom_toBottomOf="@+id/editTextText"
+            app:layout_constraintStart_toEndOf="@+id/editTextText"
+            app:layout_constraintTop_toTopOf="@+id/editTextText"
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/hargaBarang"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30px"
             android:padding="20px"
             android:text="Harga barang"
-            app:layout_constraintEnd_toEndOf="@+id/NamaBarang"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextTextHargaBarang"
             app:layout_constraintStart_toStartOf="@+id/NamaBarang"
-            app:layout_constraintTop_toBottomOf="@+id/NamaBarang" />
+            app:layout_constraintTop_toTopOf="@+id/editTextTextHargaBarang" />
 
         <TextView
             android:id="@+id/targetWaktu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30px"
             android:padding="20px"
             android:text="Target Waktu"
-            app:layout_constraintEnd_toEndOf="@+id/hargaBarang"
-            app:layout_constraintStart_toStartOf="@+id/NamaBarang"
-            app:layout_constraintTop_toBottomOf="@+id/hargaBarang" />
+            app:layout_constraintBottom_toBottomOf="@+id/editTextTextTargetWaktu"
+            app:layout_constraintStart_toStartOf="@+id/hargaBarang"
+            app:layout_constraintTop_toTopOf="@+id/editTextTextTargetWaktu" />
 
         <TextView
             android:id="@+id/totalTabungan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30px"
             android:padding="20px"
             android:text="Total Tabungan"
-            app:layout_constraintEnd_toEndOf="@+id/targetWaktu"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextTextTotalTabungan"
             app:layout_constraintStart_toStartOf="@+id/targetWaktu"
-            app:layout_constraintTop_toBottomOf="@+id/targetWaktu" />
+            app:layout_constraintTop_toTopOf="@+id/editTextTextTotalTabungan" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewWeeks"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/totalTabungan"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="16dp" />
+            android:layout_marginTop="24dp"
+            app:layout_constraintEnd_toEndOf="@+id/totalTabungan"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/editTextTextTotalTabungan"
+            app:layout_constraintTop_toBottomOf="@+id/editTextTextTotalTabungan" />
 
         <TextView
             android:id="@+id/Progress"
@@ -99,6 +99,52 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/recyclerViewWeeks" />
+
+        <EditText
+            android:id="@+id/editTextText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="52dp"
+            android:ems="10"
+            android:inputType="text"
+            android:text="Nama Barang : "
+            app:layout_constraintEnd_toEndOf="@+id/DetailProduk"
+            app:layout_constraintHorizontal_bias="0.527"
+            app:layout_constraintStart_toStartOf="@+id/DetailProduk"
+            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+        <EditText
+            android:id="@+id/editTextTextHargaBarang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:ems="10"
+            android:inputType="text"
+            android:text="Harga Barang : "
+            app:layout_constraintStart_toStartOf="@+id/editTextText"
+            app:layout_constraintTop_toBottomOf="@+id/editTextText" />
+
+        <EditText
+            android:id="@+id/editTextTextTargetWaktu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:ems="10"
+            android:inputType="text"
+            android:text="Target Waktu : "
+            app:layout_constraintStart_toStartOf="@+id/editTextTextHargaBarang"
+            app:layout_constraintTop_toBottomOf="@+id/editTextTextHargaBarang" />
+
+        <EditText
+            android:id="@+id/editTextTextTotalTabungan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:ems="10"
+            android:inputType="text"
+            android:text="Total Tabungan : "
+            app:layout_constraintStart_toStartOf="@+id/editTextTextTargetWaktu"
+            app:layout_constraintTop_toBottomOf="@+id/editTextTextTargetWaktu" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
