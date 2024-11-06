@@ -1,41 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    android:background="@drawable/icon1000">>
+    android:background="@drawable/icon1000">
 
-    <EditText
-        android:id="@+id/editTextNamaBarang"
+    <!-- LinearLayout Horizontal untuk Header -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Nama Barang" />
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="8dp"
+        android:background="#BBDEFB">
 
-    <EditText
-        android:id="@+id/editTextHargaBarang"
+        <!-- Logo Kiri -->
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/logo"
+            android:contentDescription="Logo Kiri" />
+
+        <!-- Tulisan GoWish -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="GoWish"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:textColor="#3F51B5"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp" />
+
+        <!-- Logo Kanan -->
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/logo"
+            android:contentDescription="Logo Kanan" />
+
+    </LinearLayout>
+
+    <!-- Kolom Input Nama Barang dengan Ikon -->
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Harga Barang"
-        android:inputType="numberDecimal" />
+        android:layout_marginTop="16dp">
 
-    <EditText
-        android:id="@+id/editTextTarget"
+        <EditText
+            android:id="@+id/editTextNamaBarang"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_edittext"
+            android:drawableStart="@drawable/icons3"
+            android:drawablePadding="8dp"
+            android:hint="Nama Barang"
+            android:padding="12dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Kolom Input Harga Barang dengan Ikon -->
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Target Waktu" />
+        android:layout_marginTop="16dp">
 
+        <EditText
+            android:id="@+id/editTextHargaBarang"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_edittext"
+            android:drawableStart="@drawable/icons4"
+            android:drawablePadding="8dp"
+            android:hint="Harga Barang"
+            android:inputType="numberDecimal"
+            android:padding="12dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Kolom Input Tenggat Waktu dengan Ikon -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp">
+
+        <EditText
+            android:id="@+id/editTextTarget"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_edittext"
+            android:drawableStart="@drawable/icons8"
+            android:drawablePadding="8dp"
+            android:hint="Target Waktu"
+            android:padding="12dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Tombol Tambah Barang -->
     <Button
         android:id="@+id/buttonAdd"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
+        android:textSize="18sp"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="@color/purple"
+        app:cornerRadius="20dp"
         android:text="Tambah Barang" />
 
     <ListView
         android:id="@+id/listViewWishlist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
 
     <Spinner
         android:id="@+id/spinnerWaktu"
@@ -47,4 +124,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Total Tabungan" />
+
 </LinearLayout>
