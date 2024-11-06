@@ -74,19 +74,17 @@
                 android:backgroundTint="@color/purple"
                 app:cornerRadius = "20dp"/>
 
+            <Button
+                android:id="@+id/btnSignUp"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:text="Sign Up"
+                android:backgroundTint="@color/purple"
+                app:cornerRadius = "20dp"
+                android:textSize="18sp" />
+
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
-
-    <Button
-        android:id="@+id/btnSignUp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text="Not yet registered? SignUp Now"
-        android:textSize="14sp"
-        android:textAlignment="center"
-        android:textColor="@color/purple"
-        android:layout_marginBottom="20dp"/>
 
 </LinearLayout>
