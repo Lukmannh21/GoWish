@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/icon1000"
+    android:background="@drawable/tiled"
     tools:context=".DetailActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout

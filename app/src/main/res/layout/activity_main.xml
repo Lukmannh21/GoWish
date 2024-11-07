@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    android:background="@drawable/icon1000">
+    android:background="@drawable/tiled">
 
     <!-- LinearLayout Horizontal untuk Header -->
     <LinearLayout
@@ -127,3 +127,4 @@
         android:text="Total Tabungan" />
 
 </LinearLayout>
+
