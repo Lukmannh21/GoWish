@@ -33,22 +33,28 @@ class MainActivity : AppCompatActivity() {
         buttonAdd.setOnClickListener {
             val namaBarang = editTextNamaBarang.text.toString()
             val hargaBarang = editTextHargaBarang.text.toString().toDoubleOrNull()
-            val targetWaktu = editTextTarget.text.toString().toDoubleOrNull()
+            val targetWaktu = editTextTarget.text.toString().toIntOrNull()
 
             if (namaBarang.isNotEmpty() && hargaBarang != null && targetWaktu != null) {
                 val wishlistItem = WishlistItem(
-                    id = db.database.reference.push().key ?: "",
+                    id = "", // Biarkan kosong, Firebase akan otomatis menghasilkan key
                     namaBarang = namaBarang,
                     hargaBarang = hargaBarang,
-                    targetWaktu = targetWaktu.toInt()
+                    targetWaktu = targetWaktu
                 )
                 db.addWishlistItem(wishlistItem) { success ->
                     if (success) {
                         updateWishlist()
+                        Toast.makeText(this, "Item berhasil ditambahkan", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this, "Gagal menambahkan item", Toast.LENGTH_SHORT).show()
                     }
                 }
+            } else {
+                Toast.makeText(this, "Harap isi semua kolom dengan benar", Toast.LENGTH_SHORT).show()
             }
         }
+
 
         listViewWishlist.setOnItemClickListener { _, _, position, _ ->
             db.getAllWishlistItems { items ->
@@ -70,8 +76,11 @@ class MainActivity : AppCompatActivity() {
     private fun updateWishlist() {
         db.getAllWishlistItems { items ->
             val names = items.map { "${it.namaBarang}: Rp${it.hargaBarang}" }
-            wishlistAdapter.clear()
-            wishlistAdapter.addAll(names)
+            runOnUiThread {
+                wishlistAdapter.clear()
+                wishlistAdapter.addAll(names)
+            }
         }
     }
+
 }
