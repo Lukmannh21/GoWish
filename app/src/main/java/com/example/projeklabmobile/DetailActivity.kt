@@ -2,11 +2,11 @@ package com.example.projeklabmobile
 
 import android.os.Bundle
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.projeklabmobile.adapter.WeekAdapter
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.auth.FirebaseAuth
 
 class DetailActivity : AppCompatActivity() {
     private lateinit var textViewNamaBarang: TextView
@@ -15,6 +15,9 @@ class DetailActivity : AppCompatActivity() {
     private lateinit var textViewProgress: TextView
     private lateinit var recyclerViewWeeks: RecyclerView
     private var targetWeeks: Int = 0
+    private lateinit var itemId: String  // Menyimpan ID item wishlist
+
+    private val db = DatabaseHelper()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +32,7 @@ class DetailActivity : AppCompatActivity() {
         val namaBarang = intent.getStringExtra("item_name") ?: ""
         val hargaBarang = intent.getDoubleExtra("item_price", 0.0)
         val targetWaktu = intent.getIntExtra("item_target", 0)
+        itemId = intent.getStringExtra("item_id") ?: "" // Ambil ID item dari Intent
 
         textViewNamaBarang.text = namaBarang
         textViewHargaBarang.text = "Rp $hargaBarang"
@@ -38,9 +42,17 @@ class DetailActivity : AppCompatActivity() {
         // Atur RecyclerView
         recyclerViewWeeks.layoutManager = LinearLayoutManager(this)
         val weeks = (1..targetWeeks).map { "Minggu $it" }
-        val adapter = WeekAdapter(weeks) { progress ->
+
+        // Ambil progress dari Firebase untuk item ini
+        db.getWishlistItemProgress(itemId) { progress ->
+            // Set initial progress
             textViewProgress.text = "Progress: $progress%"
+
+            // Update progress UI di RecyclerView
+            val adapter = WeekAdapter(weeks, itemId) { updatedProgress ->
+                textViewProgress.text = "Progress: $updatedProgress%" // Callback untuk update progress
+            }
+            recyclerViewWeeks.adapter = adapter
         }
-        recyclerViewWeeks.adapter = adapter
     }
 }
