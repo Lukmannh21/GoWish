@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
         wishlistAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, mutableListOf())
         listViewWishlist.adapter = wishlistAdapter
 
+        // Ketika tombol "Add" ditekan, kita menambahkan item baru ke Firebase
         buttonAdd.setOnClickListener {
             val namaBarang = editTextNamaBarang.text.toString()
             val hargaBarang = editTextHargaBarang.text.toString().toDoubleOrNull()
@@ -37,7 +38,7 @@ class MainActivity : AppCompatActivity() {
 
             if (namaBarang.isNotEmpty() && hargaBarang != null && targetWaktu != null) {
                 val wishlistItem = WishlistItem(
-                    id = "", // Biarkan kosong, Firebase akan otomatis menghasilkan key
+                    id = "", // ID kosong, Firebase akan menghasilkan key
                     namaBarang = namaBarang,
                     hargaBarang = hargaBarang,
                     targetWaktu = targetWaktu
@@ -55,11 +56,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-
+        // Ketika salah satu item di wishlist diklik, buka DetailActivity
         listViewWishlist.setOnItemClickListener { _, _, position, _ ->
             db.getAllWishlistItems { items ->
                 val item = items[position]
                 val intent = Intent(this, DetailActivity::class.java).apply {
+                    // Kirim ID item ke DetailActivity
+                    putExtra("item_id", item.id) // Kirim ID item
                     putExtra("item_name", item.namaBarang)
                     putExtra("item_price", item.hargaBarang)
                     putExtra("item_target", item.targetWaktu)
@@ -68,11 +71,14 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // Spinner untuk memilih waktu dalam bentuk Minggu atau Bulan
         spinnerWaktu.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, arrayOf("Minggu", "Bulan"))
 
+        // Update daftar wishlist ketika aplikasi dibuka
         updateWishlist()
     }
 
+    // Fungsi untuk memperbarui tampilan wishlist
     private fun updateWishlist() {
         db.getAllWishlistItems { items ->
             val names = items.map { "${it.namaBarang}: Rp${it.hargaBarang}" }
@@ -82,5 +88,4 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
 }
