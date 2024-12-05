@@ -34,10 +34,19 @@ class DatabaseHelper {
             return
         }
         wishlistRef.get().addOnSuccessListener { snapshot ->
-            val items = snapshot.children.mapNotNull { it.getValue(WishlistItem::class.java) }
+            val items = snapshot.children.mapNotNull {
+                // Menangani kemungkinan bahwa data yang diambil tidak sesuai tipe
+                try {
+                    it.getValue(WishlistItem::class.java)
+                } catch (e: Exception) {
+                    // Menangani error konversi jika ada
+                    null
+                }
+            }
             onComplete(items)  // Mengembalikan list item wishlist
         }
     }
+
 
     // Mengupdate progress item wishlist
     fun updateWishlistProgress(id: String, progress: Int, onComplete: (Boolean) -> Unit) {
