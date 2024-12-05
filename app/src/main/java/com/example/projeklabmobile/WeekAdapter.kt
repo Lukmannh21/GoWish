@@ -12,7 +12,7 @@ import com.example.projeklabmobile.R
 
 class WeekAdapter(
     private val weeks: List<String>,
-    private val itemId: String,  // ID item wishlist yang sedang diproses
+    private val itemId: String,
     private val onProgressChange: (Int) -> Unit
 ) : RecyclerView.Adapter<WeekAdapter.WeekViewHolder>() {
 
@@ -50,7 +50,6 @@ class WeekAdapter(
         val week = weeks[position]
         holder.textViewWeek.text = week
 
-        // Menghapus listener untuk menghindari update yang tidak perlu
         holder.checkBoxWeek.setOnCheckedChangeListener(null)
 
         // Set checkbox status berdasarkan apakah minggu ini sudah dicentang sebelumnya
@@ -65,13 +64,13 @@ class WeekAdapter(
                 checkedWeeks.remove(position)
             }
 
-            // Hitung progress berdasarkan jumlah minggu yang dicentang
+            // Hitung progress berdasarkan jumlah minggu yang dicentang..,
             val progress = (checkedWeeks.size * 100) / weeks.size
 
-            // Panggil callback untuk memperbarui UI di DetailActivity
+
             onProgressChange(progress)
 
-            // Simpan progress terbaru ke Firebase
+            // Simpan progress terbaru kefirebase
             db.updateWishlistProgress(itemId, progress) { success ->
                 if (!success) {
                     // Tampilkan pesan error jika gagal menyimpan progress

@@ -72,7 +72,7 @@ class DatabaseHelper {
         }
     }
 
-    // Fungsi tambahan untuk mendapatkan item berdasarkan ID
+    // Fungsi tambahan untuk meng get item berdasarkan ID
     fun getWishlistItemById(id: String, onComplete: (WishlistItem?) -> Unit) {
         if (userId.isEmpty()) {
             onComplete(null)  // Mengembalikan null jika user tidak login
